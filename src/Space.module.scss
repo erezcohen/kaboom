@@ -1,4 +1,10 @@
 .space {
   flex: 1;
   background-color: darkcyan;
+  position: relative;
+}
+
+.box {
+  position: absolute;
+  background-color: pink;
 }
