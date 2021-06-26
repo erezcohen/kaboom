@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Space.module.scss';
 
 const initialLength = 150;
-const initialLocation = 20;
+const initialLocation = 50;
 
 const boxStyle = {
   width: initialLength + 'px',
