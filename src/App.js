@@ -1,6 +1,6 @@
 import React from 'react';
-import Space from './Space';
-import Header from './Header';
+import Space from './space/Space';
+import Header from './header/Header';
 import styles from './App.module.scss';
 
 function App() {
