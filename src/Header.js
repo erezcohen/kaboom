@@ -1,38 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Header.module.scss';
 
-let timerHandle;
 const INITIAL_TIME = 3 * 10;
+let intervalHandle;
+let timeoutHandle;
 
 const Header = () => {
   const [gameOn, setGameOn] = useState(false);
   const [time, setTime] = useState(INITIAL_TIME);
 
   useEffect(() => {
-    if (!gameOn) {
-      return;
-    }
-    if (time <= 0) {
-      return setGameOn(false);
-    }
-    timerHandle = setTimeout(() => {
-      setTime((time) => time - 1);
-    }, 100);
-  }, [time, gameOn]);
-
-  useEffect(() => {
-    return () => clearTimeout(timerHandle);
+    return () => {
+      clearTimeout(timeoutHandle);
+      clearInterval(intervalHandle);
+    };
   }, []);
+
+  const deductTimer = () => setTime((time) => time - 1);
 
   const onStartClicked = () => {
     setGameOn(true);
     setTime(INITIAL_TIME);
+    intervalHandle = setInterval(deductTimer, 100);
+    timeoutHandle = setTimeout(() => {
+      clearTimeout(intervalHandle);
+      setGameOn(false);
+    }, INITIAL_TIME * 100);
   };
 
   return (
     <div className={styles['header']}>
       <div className={styles['start']}>
-        <button onClick={onStartClicked} className={styles['start-btn']}>
+        <button
+          onClick={onStartClicked}
+          className={styles['start-btn']}
+          disabled={gameOn}
+        >
           Start
         </button>
       </div>
@@ -51,3 +54,19 @@ const Header = () => {
 };
 
 export default Header;
+
+/*
+Alternative way to implement the timer:
+
+useEffect(() => {
+  if (!gameOn) {
+    return;
+  }
+  if (time <= 0) {
+    return setGameOn(false);
+  }
+  timerHandle = setTimeout(() => {
+    setTime((time) => time - 1);
+  }, 100);
+}, [time, gameOn]);
+*/

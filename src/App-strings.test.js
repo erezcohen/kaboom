@@ -7,7 +7,8 @@ import {
 } from '@testing-library/react';
 import App from './App';
 
-const INITIAL_TIMER_TXT = /3.0/;
+const GAME_TIME_IN_SECS = 3;
+const INITIAL_TIMER_TXT = new RegExp(`${GAME_TIME_IN_SECS}\.0`);
 
 describe('Strings', () => {
   describe('"Kaboom" header', () => {
@@ -61,13 +62,14 @@ describe('Strings', () => {
         const startBtn = getByText('Start');
         fireEvent.click(startBtn);
 
-        jest.runAllTimers();
+        // jest.runAllTimers();
+        jest.advanceTimersByTime(GAME_TIME_IN_SECS * 1000);
       });
 
       await waitFor(
         () =>
           // expect(getByTestId('timer-txt')).toHaveTextContent('0.0') // searches for sub string
-          expect(getByTestId('timer-txt')).toHaveTextContent(/0.0/) // expect exact match
+          expect(getByTestId('timer-txt')).toHaveTextContent(/0\.0/) // expect exact match
       );
     });
   });
