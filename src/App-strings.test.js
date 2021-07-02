@@ -1,10 +1,5 @@
-import {
-  render,
-  screen,
-  waitFor,
-  fireEvent,
-  act
-} from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
 
 const GAME_TIME_IN_SECS = 3;
@@ -53,24 +48,37 @@ describe('Strings', () => {
       expect(getByTestId('timer-txt')).toHaveTextContent(INITIAL_TIMER_TXT);
     });
 
-    it('Changes the timer from initial time to 0 after clicking "start"', async () => {
+    it('Changes the timer from initial time to 0 after clicking "start" - using act()', () => {
       const { getByTestId, getByText } = render(<App />);
 
       act(() => {
         jest.useFakeTimers();
 
         const startBtn = getByText('Start');
-        fireEvent.click(startBtn);
+        userEvent.click(startBtn);
 
         // jest.runAllTimers();
         jest.advanceTimersByTime(GAME_TIME_IN_SECS * 1000);
       });
 
-      await waitFor(
-        () =>
-          // expect(getByTestId('timer-txt')).toHaveTextContent('0.0') // searches for sub string
-          expect(getByTestId('timer-txt')).toHaveTextContent(/0\.0/) // expect exact match
-      );
+      // expect(getByTestId('timer-txt')).toHaveTextContent('0.0') // searches for sub string
+      expect(getByTestId('timer-txt')).toHaveTextContent(/0\.0/); // expect exact match
+    });
+
+    it('Changes the timer from initial time to 0 after clicking "start" 2 - async + waitFor', async () => {
+      const { getByTestId, getByText } = render(<App />);
+
+      jest.useFakeTimers();
+
+      const startBtn = getByText('Start');
+      userEvent.click(startBtn);
+
+      await waitFor(() => {
+        // the waitFor wraps the act()
+        // jest.runAllTimers();
+        jest.advanceTimersByTime(GAME_TIME_IN_SECS * 1000);
+        expect(getByTestId('timer-txt')).toHaveTextContent(/0\.0/);
+      });
     });
   });
 });
