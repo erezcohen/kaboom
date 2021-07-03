@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styles from './Header.module.scss';
 
 const INITIAL_TIME = 3 * 10;
 let intervalHandle;
 let timeoutHandle;
 
-const Header = () => {
-  const [gameOn, setGameOn] = useState(false);
+const Header = ({ gameOn, setGameOn }) => {
   const [time, setTime] = useState(INITIAL_TIME);
 
   useEffect(() => {
@@ -51,6 +51,11 @@ const Header = () => {
       </div>
     </div>
   );
+};
+
+Header.propTypes = {
+  gameOn: PropTypes.bool.isRequired,
+  setGameOn: PropTypes.func.isRequired
 };
 
 export default Header;

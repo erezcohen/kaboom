@@ -2,11 +2,11 @@
   flex: 1;
   background-color: darkcyan;
   position: relative;
-}
 
-.box {
-  position: absolute;
-  background-color: pink;
-  transform: translate(-50%, -50%);
-  border: 2px solid black;
+  .box {
+    position: absolute;
+    background-color: pink;
+    transform: translate(-50%, -50%);
+    border: 2px solid black;
+  }
 }
