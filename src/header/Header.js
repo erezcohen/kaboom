@@ -16,12 +16,12 @@ const Header = ({ gameOn, setGameOn }) => {
     };
   }, []);
 
-  const deductTimer = () => setTime((time) => time - 1);
+  //  const deductTimer = () => setTime((time) => time - 1);
 
   const onStartClicked = () => {
     setGameOn(true);
     setTime(INITIAL_TIME);
-    intervalHandle = setInterval(deductTimer, 100);
+    intervalHandle = setInterval(() => setTime((time) => time - 1), 100);
     timeoutHandle = setTimeout(() => {
       clearTimeout(intervalHandle);
       setGameOn(false);
